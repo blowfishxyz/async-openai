@@ -39,9 +39,8 @@ impl Default for OpenAIConfig {
     fn default() -> Self {
         Self {
             api_base: OPENAI_API_BASE.to_string(),
-            api_key: std::env::var("OPENAI_API_KEY")
-                .unwrap_or_else(|_| "".to_string())
-                .into(),
+            api_key: Secret::new(std::env::var("OPENAI_API_KEY")
+                .unwrap_or_else(|_| "".to_string())),
             org_id: Default::default(),
             project_id: Default::default(),
         }
@@ -68,7 +67,7 @@ impl OpenAIConfig {
 
     /// To use a different API key different from default OPENAI_API_KEY env var
     pub fn with_api_key<S: Into<String>>(mut self, api_key: S) -> Self {
-        self.api_key = Secret::from(api_key.into());
+        self.api_key = Secret::new(api_key.into());
         self
     }
 
@@ -146,9 +145,8 @@ impl Default for AzureConfig {
     fn default() -> Self {
         Self {
             api_base: Default::default(),
-            api_key: std::env::var("OPENAI_API_KEY")
-                .unwrap_or_else(|_| "".to_string())
-                .into(),
+            api_key: Secret::new(std::env::var("OPENAI_API_KEY")
+                .unwrap_or_else(|_| "".to_string())),
             deployment_id: Default::default(),
             api_version: Default::default(),
         }
@@ -171,7 +169,7 @@ impl AzureConfig {
     }
 
     /// To use a different API key different from default OPENAI_API_KEY env var
-    pub fn with_api_key<S: Into<String>>(mut self, api_key: S) -> Self {
+    pub fn with_api_key<S: Into<Secret<String>>>(mut self, api_key: S) -> Self {
         self.api_key = Secret::from(api_key.into());
         self
     }
