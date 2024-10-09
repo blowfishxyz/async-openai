@@ -30,7 +30,7 @@ base64 = "0.22.1"
 futures = "0.3.30"
 rand = "0.8.5"
 reqwest = { version = "0.11.27", features = [
-    "json",
+    "json",=
     "stream",
     "multipart",
 ], default-features = false }
